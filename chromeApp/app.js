@@ -2,11 +2,12 @@ angular.module('main',[])
 .controller('mainCtrl', function($scope) {
   $scope.ipAddress = 'filler'
   $scope.title = 'TITLEEEE';
-  $scope.playing = true;
+  $scope.emulator = { playing: true}
   $scope.togglePlaying = function() {
     console.log("CLICKEDDDD")
-    $scope.playing = !$scope.playing;
-    console.log($scope.playing)
+    $scope.emulator.playing = true;
+    console.log($scope.emulator.playing)
+    $scope.$apply();
   }
 
 
