@@ -2,7 +2,7 @@ angular.module('main',[])
 .controller('mainCtrl', function($scope) {
   $scope.ipAddress = 'filler'
   $scope.title = 'TITLEEEE';
-  $scope.playing = true;
+  $scope.playing = false;
   $scope.togglePlaying = function() {
     console.log("CLICKEDDDD")
     $scope.playing = !$scope.playing;
@@ -23,7 +23,10 @@ angular.module('main',[])
     ipAddresses.forEach(function (ipAddress) {
       if (ipAddress.prefixLength === 12) {
         $scope.title = 'IP FOUND'
+
         $scope.ipAddress = ip4 = ipAddress.address;
+        var toQ = ipv4 + ':' + port + '/pair-controller';
+        new QRCode(document.getElementById('qrcode'), toQ);
         // force scope to update
         $scope.$apply()
       }
