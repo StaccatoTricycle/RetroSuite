@@ -5,8 +5,7 @@
       }
    },
    "author": {
-      "name": "Matthew Bauer",
-      "url": "https://matthewbauer.us"
+      "name": "Staccaty Tricycle"
    },
    "description": "A video game emulator for Chrome supporting NES, SNES, Gameboy, and Gameboy Advance ROMs.",
    "file_handlers": {
@@ -15,12 +14,12 @@
       }
    },
    "icons": {
-      "128": "icon/128.png",
-      "512": "icon/512.png"
+     "16": "assets/images/nes_16.png",
+     "128": "assets/images/nes_128.png"
    },
    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmvW58l0Bg/LFZJsvjDlIIYfqxaUC7d8yUT2piRr3Oyk9rF8wnN9TjvGKGD+thK6bqDSNA0F2SqKjWlbAhzy4BdVtwsHs0/MbndW/7NYKFcXGQf+UkF1VubNw8gIIQhzBGDBK4fOX4mvbCk51GIZSsZtqejJt+OOseirrW1d10VvWlkUG+od9asfhMO1h6swlSJVTDEMdyLm8O9mFPUVLPWNS71q28k6OT+0Xg2TK3/jDDra2+NDZOpKiDwrIpITRPu6nVVZMqQsGXudmNwRTEMY2PGMiU6IYmml5X1CxRsIeD6bEHX7NYKYvM89XaY5vspVXpMmZTwvJpD5hE3oGHwIDAQAB",
    "manifest_version": 2,
-   "name": "GPemu",
+   "name": "OSnes",
    "offline_enabled": true,
    "permissions": [
      "storage",
@@ -34,7 +33,7 @@
      "storage",
      "unlimitedStorage"
    ],
-   "short_name": "gpemu",
+   "short_name": "OSnes",
    "update_url": "https://clients2.google.com/service/update2/crx",
    "version": "1.2.7"
 }

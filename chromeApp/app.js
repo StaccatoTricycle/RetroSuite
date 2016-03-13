@@ -23,7 +23,7 @@ angular.module('main',[])
     ipAddresses.forEach(function (ipAddress) {
       if (ipAddress.prefixLength === 12) {
         $scope.title = 'IP FOUND'
-        $scope.ipAddress = ipAddress.address;
+        $scope.ipAddress = ip4 = ipAddress.address;
         // force scope to update
         $scope.$apply()
       }

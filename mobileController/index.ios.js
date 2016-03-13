@@ -1,5 +1,6 @@
 var React = require('react-native');
 var QRReader = require('./App/Components/QRReader');
+var ControllerView = require('./App/Components/ControllerView'); //including for now so we can easily set initial route to ControllerView for development purposes
 
 var {
   AppRegistry,
