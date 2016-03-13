@@ -22,57 +22,91 @@ class ControllerView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      //used to scale sizes of buttons depending on phone resolution
       circleButtonSize: undefined,
       arrowButtonSize: undefined,
       selectStartButtonSize: undefined,
+      //used to detect changes in the D-Pad
+      dPadButton: undefined, //currently pressed D-pad button
     }
   }
 
-  //NOT USED FOR NOW: Will be used to make D-pad a joystick
-  // componentWillMount() {
-  //     this._panResponder = PanResponder.create({
-  //       // Ask to be the responder:
-  //       onStartShouldSetPanResponder: (evt, gestureState) => true,
-  //       onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
-  //       onMoveShouldSetPanResponder: (evt, gestureState) => true,
-  //       onMoveShouldSetPanResponderCapture: (evt, gestureState) => false,
+  componentWillMount() {
+    //The following code is used to make the D-Pad into a joystick so the user can roll their thumb between buttons and trigger a response
+    //instead of having to lift a finger and tap 
+    this._panResponder = PanResponder.create({
+      // Ask to be the responder:
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
+      onMoveShouldSetPanResponder: (evt, gestureState) => true,
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) => false,
 
-  //       onPanResponderGrant: (evt, gestureState) => {
-  //         // The guesture has started. Show visual feedback so the user knows
-  //         // what is happening!
-  //         console.log('grant gestureState', gestureState.numberActiveTouches);
-  //         // console.log('grant evt', evt);
+      onPanResponderGrant: (evt, gestureState) => {
+        // The gesture has started
+      },
+      onPanResponderMove: (evt, gestureState) => {
+        // console.log('move gestureState', gestureState);
 
+        var x2 = gestureState.moveX;
+        var y2 = gestureState.moveY;
 
-  //         // gestureState.{x,y}0 will be set to zero now
-  //       },
-  //       onPanResponderMove: (evt, gestureState) => {
-  //         // The most recent move distance is gestureState.move{X,Y}
-  //         console.log('move gestureState', gestureState.numberActiveTouches);
-  //         // console.log('move evt', evt);
+        var distanceToUp = Math.sqrt( (140-x2)*(140-x2) + (132.5-y2)*(132.5-y2) );
+        var distanceToRight = Math.sqrt( (186.5-x2)*(186.5-x2) + (180-y2)*(180-y2) );
+        var distanceToDown = Math.sqrt( (140-x2)*(140-x2) + (228.5-y2)*(228.5-y2) );
+        var distanceToLeft = Math.sqrt( (94.5-x2)*(94.5-x2) + (180-y2)*(180-y2) );
 
+        var closest = Math.min(distanceToUp, distanceToRight, distanceToDown, distanceToLeft);
 
+        if(closest===distanceToUp && this.state.dPadButton!=='up') {
+          this._upArrowPressIn(); 
+        } else if (closest===distanceToRight && this.state.dPadButton!=='right') {
+          this._rightArrowPressIn(); 
+        } else if (closest===distanceToDown && this.state.dPadButton!=='down') {
+          this._downArrowPressIn(); 
+        } else if (closest===distanceToLeft && this.state.dPadButton!=='left') {
+          this._leftArrowPressIn(); 
+        }
+      },
+      onPanResponderTerminationRequest: (evt, gestureState) => true,
+      onPanResponderRelease: (evt, gestureState) => {
+        // The user has released all touches within the responder
+        // This typically means a gesture has succeeded
 
-  //         // The accumulated gesture distance since becoming responder is
-  //         // gestureState.d{x,y}
-  //       },
-  //       onPanResponderTerminationRequest: (evt, gestureState) => true,
-  //       onPanResponderRelease: (evt, gestureState) => {
-  //         // The user has released all touches while this view is the
-  //         // responder. This typically means a gesture has succeeded
-  //         console.log('release');
-  //       },
-  //       onPanResponderTerminate: (evt, gestureState) => {
-  //         // Another component has become the responder, so this gesture
-  //         // should be cancelled
-  //       },
-  //       onShouldBlockNativeResponder: (evt, gestureState) => {
-  //         // Returns whether this component should block native components from becoming the JS
-  //         // responder. Returns true by default. Is currently only supported on android.
-  //         return true;
-  //       },
-  //     });
-  //   }
+        // if gestureState.moveX and gestureState.moveY are 0, that means that there is no movement (the user has tapped and not dragged)
+        // distance should therefore be calculated based on starting tap location (gestureState.x0 and gestureState.y0)
+        var x2 = gestureState.moveX===0 ? gestureState.x0 : gestureState.moveX;
+        var y2 = gestureState.moveY===0 ? gestureState.y0 : gestureState.moveY;
+
+        //TODO: don't hardcode theses points of the D-Pad buttons
+        var distanceToUp = Math.sqrt( (140-x2)*(140-x2) + (132.5-y2)*(132.5-y2) );
+        var distanceToRight = Math.sqrt( (186.5-x2)*(186.5-x2) + (180-y2)*(180-y2) );
+        var distanceToDown = Math.sqrt( (140-x2)*(140-x2) + (228.5-y2)*(228.5-y2) );
+        var distanceToLeft = Math.sqrt( (94.5-x2)*(94.5-x2) + (180-y2)*(180-y2) );
+
+        var closest = Math.min(distanceToUp, distanceToRight, distanceToDown, distanceToLeft);
+
+        if(closest===distanceToUp) {
+          this._upArrowPressOut(); 
+        } else if (closest===distanceToRight) {
+          this._rightArrowPressOut(); 
+        } else if (closest===distanceToDown) {
+          this._downArrowPressOut(); 
+        } else if (closest===distanceToLeft) {
+          this._leftArrowPressOut(); 
+        }
+
+      },
+      onPanResponderTerminate: (evt, gestureState) => {
+        // Another component has become the responder, so this gesture
+        // should be cancelled
+      },
+      onShouldBlockNativeResponder: (evt, gestureState) => {
+        // Returns whether this component should block native components from becoming the JS
+        // responder. Returns true by default. Is currently only supported on android.
+        return true;
+      },
+    });
+  }
 
 
   componentDidMount() {
@@ -100,116 +134,196 @@ class ControllerView extends React.Component {
     }
   }
 
+  /////////////////////////////////////////////////////////////////////
   //Right thumb buttons: A, B, X, Y
+  /////////////////////////////////////////////////////////////////////
   _APressIn() {
-    console.log('A pressed');
-    // VibrationIOS.vibrate()
-    // return true;
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'a', function () {
+      console.log('A pressed');
+    });
   }
-  _APressOut(event) {
-    console.log('A released')
+  _APressOut() {
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'a', function () {
+      console.log('A released');
+    });
   }
 
   _BPressIn() {
-    console.log('B pressed')
-    // return true;
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'b', function () {
+      console.log('B pressed');
+    });
   }
   _BPressOut() {
-    console.log('B released')
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'b', function () {
+      console.log('B released');
+    });
   }
 
   _XPressIn() {
-    console.log('X pressed')
-    // return true;
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'x', function () {
+      console.log('X pressed');
+    });
   }
   _XPressOut() {
-    console.log('X released')
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'x', function () {
+      console.log('X released');
+    });
   }
 
   _YPressIn() {
-    console.log('Y pressed')
-    // return true;
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'y', function () {
+      console.log('Y pressed');
+    });
   }
   _YPressOut() {
-    console.log('Y released')
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'y', function () {
+      console.log('Y released');
+    });
   }
 
+  /////////////////////////////////////////////////////////////////////
   //Left thumb buttons: Direction pad
+  /////////////////////////////////////////////////////////////////////
   _upArrowPressIn() {
-    console.log('up arrow pressed')
-    // return true;
+    if(this.state.dPadButton!==undefined && this.state.dPadButton!=='up') { //there is already another D-Pad button pressed, which means that we are changing from one D-Pad button to another
+      // this.setState({dPadButtonsMoved: true});
+      if(this.state.dPadButton==='down') {
+        this._downArrowPressOut();
+      } else if(this.state.dPadButton==='left') {
+        this._leftArrowPressOut();
+      } else if(this.state.dPadButton==='right') {
+        this._rightArrowPressOut();
+      }
+    }
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'up', function () {
+      console.log('up arrow pressed');
+    });
+    this.setState({dPadButton: "up"});
   }
   _upArrowPressOut() {
-    console.log('up arrow released')
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'up', function () {
+      console.log('up arrow released');
+    });
+    this.setState({dPadButton: undefined});
   }
 
   _downArrowPressIn() {
-    console.log('down arrow pressed')
-    // return true;
+    if(this.state.dPadButton!==undefined && this.state.dPadButton!=='down') { //there is already another D-Pad button pressed, which means that we are changing from one D-Pad button to another
+      if(this.state.dPadButton==='up') {
+        this._upArrowPressOut();
+      } else if(this.state.dPadButton==='left') {
+        this._leftArrowPressOut();
+      } else if(this.state.dPadButton==='right') {
+        this._rightArrowPressOut();
+      }
+    }
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'down', function () {
+      console.log('down arrow pressed');
+    });
+    this.setState({dPadButton: "down"});
   }
   _downArrowPressOut() {
-    console.log('down arrow released')
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'down', function () {
+      console.log('down arrow released');
+    });
+    this.setState({dPadButton: undefined});
   }
 
   _rightArrowPressIn() {
-    console.log('right arrow pressed')
-    // return true;
+    if(this.state.dPadButton!==undefined && this.state.dPadButton!=='right') { //there is already another D-Pad button pressed, which means that we are changing from one D-Pad button to another
+      if(this.state.dPadButton==='down') {
+        this._downArrowPressOut();
+      } else if(this.state.dPadButton==='left') {
+        this._leftArrowPressOut();
+      } else if(this.state.dPadButton==='up') {
+        this._upArrowPressOut();
+      }
+    }
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'right', function () {
+      console.log('right arrow pressed');
+    });
+    this.setState({dPadButton: "right"});
   }
   _rightArrowPressOut() {
-    console.log('right arrow released')
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'right', function () {
+      console.log('right arrow released');
+    });
+    this.setState({dPadButton: undefined});
   }
 
   _leftArrowPressIn() {
-    console.log('left arrow pressed')
-    // return true;
+    if(this.state.dPadButton!==undefined && this.state.dPadButton!=='left') { //there is already another D-Pad button pressed, which means that we are changing from one D-Pad button to another
+      if(this.state.dPadButton==='down') {
+        this._downArrowPressOut();
+      } else if(this.state.dPadButton==='up') {
+        this._upArrowPressOut();
+      } else if(this.state.dPadButton==='right') {
+        this._rightArrowPressOut();
+      }
+    }
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'left', function () {
+      console.log('left arrow pressed');
+    });
+    this.setState({dPadButton: "left"});
   }
   _leftArrowPressOut() {
-    console.log('left arrow released')
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'left', function () {
+      console.log('left arrow released');
+    });
+    this.setState({dPadButton: undefined});
   }
 
-  //Index finger buttons: Left and Right Shoulders. TODO: implement shoulder buttons on screen, or ideally with volume rocker
+  /////////////////////////////////////////////////////////////////////
+  //Shoulder buttons: Left and Right Index Finger Triggers. 
+  //TODO: implement shoulder buttons on screen, or ideally with volume rocker
+  /////////////////////////////////////////////////////////////////////
   _rightShoulderPressIn() {
-    console.log('right shoulder pressed')
-    // return true;
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'r-shoulder', function () {
+      console.log('right shoulder pressed');
+    });
   }
   _rightShoulderPressOut() {
-    console.log('right shoulder released')
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'r-shoulder', function () {
+      console.log('right arrow released');
+    });
   }
 
   _leftShoulderPressIn() {
-    console.log('left shoulder pressed')
-    // return true;
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'l-shoulder', function () {
+      console.log('left shoulder pressed');
+    });
   }
   _leftShoulderPressOut() {
-    console.log('left shoulder released')
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'l-shoulder', function () {
+      console.log('left arrow released');
+    });
   }
 
-  //Start and Select buttons; never held down, so an onPress event is used instead of an onPressIn and onPressOut pair
-  _startPress() {
-    console.log('start pressed')
+  /////////////////////////////////////////////////////////////////////
+  //Start and Select buttons
+  /////////////////////////////////////////////////////////////////////
+  _startPressIn() {
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'start', function () {
+      console.log('start pressed');
+      VibrationIOS.vibrate();
+    });
   }
-  _selectPress() {
-    console.log('select released')
-  }
-
-  _onResponderTerminationRequest(evt) {
-    console.log('termination request');
-    return false;
-  }
-
-  _onStartShouldSetResponderCapture(evt) {
-    console.log('button pressed')
-    // console.log(evt.nativeEvent.touches);
-    console.log('X:', evt.nativeEvent.locationX, 'Y:', evt.nativeEvent.locationY);
-    // return true;
+  _startPressOut() {
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'start', function () {
+      console.log('start released');
+    });
   }
 
-  _onResponderRelease() {
-    console.log('button released');
-  } 
-
-  _onResponderTerminate() {
-    console.log('has been terminated');
+  _selectPressIn() {
+    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'select', function () {
+      console.log('select pressed');
+      VibrationIOS.vibrate();
+    });
+  }
+  _selectPressOut() {
+    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'select', function () {
+      console.log('select released');
+    });
   }
 
   render() {
@@ -219,40 +333,41 @@ class ControllerView extends React.Component {
         <Image source={require('./Assets/snescontrollercropped.jpg')} style={styles.image}> 
 
           <View style={styles.AButton} onTouchStart={this._APressIn.bind(this)} onTouchEnd={this._APressOut.bind(this)}> 
-            <IconIon name="record" size={this.state.circleButtonSize} color="#a82530"/>
+            <IconIon name="record" size={this.state.circleButtonSize} color="transparent"/>
           </View>
           <View style={styles.BButton} onTouchStart={this._BPressIn.bind(this)} onTouchEnd={this._BPressOut.bind(this)}> 
-            <IconIon name="record" size={this.state.circleButtonSize} color="#d9a04c"/>
+            <IconIon name="record" size={this.state.circleButtonSize} color="transparent"/>
           </View>
           <View style={styles.XButton} onTouchStart={this._XPressIn.bind(this)} onTouchEnd={this._XPressOut.bind(this)}> 
-            <IconIon name="record" size={this.state.circleButtonSize} color="#3645ba"/>
+            <IconIon name="record" size={this.state.circleButtonSize} color="transparent"/>
           </View>
           <View style={styles.YButton} onTouchStart={this._YPressIn.bind(this)} onTouchEnd={this._YPressOut.bind(this)}> 
-            <IconIon name="record" size={this.state.circleButtonSize} color="#428a43"/>
+            <IconIon name="record" size={this.state.circleButtonSize} color="transparent"/>
           </View>
 
-          <View style={styles.upButton} onTouchStart={this._upArrowPressIn.bind(this)}  onTouchEnd={this._upArrowPressOut.bind(this)}> 
-            <IconIon name="stop" size={this.state.arrowButtonSize} color="rgba(0,0,0,0.2)"/>
+          <View {...this._panResponder.panHandlers}>
+            <View style={styles.upButton} onTouchStart={this._upArrowPressIn.bind(this)}> 
+              <IconIon name="stop" size={this.state.arrowButtonSize} color="transparent"/>
+            </View>
+            <View style={styles.downButton} onTouchStart={this._downArrowPressIn.bind(this)}> 
+              <IconIon name="stop" size={this.state.arrowButtonSize} color="transparent"/>
+            </View>
+            <View style={styles.leftButton} onTouchStart={this._leftArrowPressIn.bind(this)}> 
+              <IconIon name="stop" size={this.state.arrowButtonSize} color="transparent"/>
+            </View>
+            <View style={styles.rightButton} onTouchStart={this._rightArrowPressIn.bind(this)}> 
+              <IconIon name="stop" size={this.state.arrowButtonSize} color="transparent"/>
+            </View>
           </View>
-          <View style={styles.downButton} onTouchStart={this._downArrowPressIn.bind(this)} onTouchEnd={this._downArrowPressOut.bind(this)}> 
-            <IconIon name="stop" size={this.state.arrowButtonSize} color="rgba(0,0,0,0.2)"/>
-          </View>
-          <View style={styles.leftButton} onTouchStart={this._leftArrowPressIn.bind(this)} onTouchEnd={this._leftArrowPressOut.bind(this)}> 
-            <IconIon name="stop" size={this.state.arrowButtonSize} color="rgba(0,0,0,0.2)"/>
-          </View>
-          <View style={styles.rightButton} onTouchStart={this._rightArrowPressIn.bind(this)} onTouchEnd={this._rightArrowPressOut.bind(this)}> 
-            <IconIon name="stop" size={this.state.arrowButtonSize} color="rgba(0,0,0,0.2)"/>
-          </View>
-
 
           <View style={styles.selectButton}> 
-            <TouchableOpacity onPressIn={this._selectPress.bind(this)} onPressOut={this._leftArrowPressOut.bind(this)} >
-              <IconIon name="edit" size={this.state.selectStartButtonSize} color="rgba(0,0,0,0.08)"/>
+            <TouchableOpacity onPressIn={this._selectPressIn.bind(this)} onPressOut={this._selectPressOut.bind(this)}>
+              <IconIon name="edit" size={this.state.selectStartButtonSize} color="transparent"/>
             </TouchableOpacity>
           </View>
           <View style={styles.startButton}> 
-            <TouchableOpacity onPressIn={this._startPress.bind(this)} onPressOut={this._rightArrowPressOut.bind(this)}>
-              <IconIon name="edit" size={this.state.selectStartButtonSize} color="rgba(0,0,0,0.08)"/>
+            <TouchableOpacity onPressIn={this._startPressIn.bind(this)} onPressOut={this._startPressOut.bind(this)}>
+              <IconIon name="edit" size={this.state.selectStartButtonSize} color="transparent"/>
             </TouchableOpacity>
           </View>
 

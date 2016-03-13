@@ -7,9 +7,10 @@
   <title>OSnes</title>
 </head>
 <body>
-  <div id="menu-screen" ng-app="main" ng-hide={{playing}} ng-controller="mainCtrl">
+  <div id="menu-screen" ng-app="main" ng-hide="emulator.playing" ng-controller="mainCtrl">
     <h1>{{title}}</h1>
     <p>{{ipAddress}}</p>
+    <div id="qrcode"></div>
     <div class="button" ng-click="togglePlaying()">START</div>
   </div>
   <!-- this is the emulator -->
@@ -52,6 +53,7 @@
       <pre id="av-info"></pre>
     </div>
   </div>
+  <script src="./lib/node.js"></script>
   <script src="./server/server.js"></script>
   <script src="./server/router.js"></script>
   <script src="google-analytics-bundle.js"></script>
@@ -62,7 +64,6 @@
   <script src="bootstrap.js"></script>
   <!-- our dependencies -->
   <script src="lib/angular-min.js"></script>
-  <script src="./lib/node.js"></script>
   <script src="./lib/jquery-min.js"></script>
   <script src="./lib/qr-code.js"></script>
 
