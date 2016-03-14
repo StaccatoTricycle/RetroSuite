@@ -120,7 +120,9 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-orientation')
+    compile project(':react-native-android-statusbar')
+    compile project(':Orientation')
+    compile project(':ReactNativeBarcodescanner')
     compile project(':react-native-camera')
     compile project(':react-native-vector-icons')
     compile fileTree(dir: "libs", include: ["*.jar"])
