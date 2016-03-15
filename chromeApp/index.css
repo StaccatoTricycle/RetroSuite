@@ -9,16 +9,35 @@ html, body, canvas {
   user-select: none;
   overflow: hidden;
 }
+@font-face {
+    font-family: dockerOne;
+    src: url(dockerOne.ttf);
+}
 .button {
   height:100px;
   width:300px;
   background-color: blue;
+}
+#title {
+  margin: 0 auto;
+  width: 400px;
+  margin-top: 5%;
+  font-family: dockerOne;
+  color: white;
+  font-size: 3em;
+}
+#qrcode {
+  margin: 0 auto;
+  margin-top:10%;
+  width: 275px;
 }
 #menu-screen {
   position: fixed;
   height: 100%;
   width: 100%;
   background-color: red;
+  background-size: cover;
+  background-image: url('wallp1.jpg');
 }
 .draghint {
   display: table;

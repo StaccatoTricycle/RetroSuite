@@ -6,6 +6,12 @@
   "scripts": {
     "test": "mocha -R nyan"
   },
+  "authors": [
+    "Joe Miller",
+    "Franklin Shieh",
+    "Colin Whitmarsh",
+    "Kyle Corbelli"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/StaccatoTricycle/OSnes.git"
@@ -14,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/StaccatoTricycle/OSnes/issues"
   },
-  "homepage": "https://github.com/StaccatoTricycle/OSnes#readme"
+  "homepage": "https://github.com/StaccatoTricycle/OSnes#readme",
+  "dependencies": {
+    "react-native-android-statusbar": "^0.1.2"
+  }
 }
