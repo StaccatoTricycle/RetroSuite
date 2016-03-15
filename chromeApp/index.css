@@ -28,8 +28,9 @@ html, body, canvas {
 }
 #qrcode {
   margin: 0 auto;
+  border: thick solid white;
   margin-top:10%;
-  width: 275px;
+  width: 255px;
 }
 #menu-screen {
   position: fixed;
