@@ -191,31 +191,31 @@ class ControllerView extends React.Component {
   //Right thumb buttons: A, B, X, Y
   /////////////////////////////////////////////////////////////////////
   _APressIn() {
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'b'); //emulator has a and b switched, so we switch again to make it normal
+    api.Press(this.props.route.ipAddress, 'b'); //emulator has a and b switched, so we switch again to make it normal
   }
   _APressOut() {
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'b'); //emulator has a and b switched, so we switch again to make it normal
+    api.Release(this.props.route.ipAddress, 'b'); //emulator has a and b switched, so we switch again to make it normal
   }
 
   _BPressIn() {
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'a'); //emulator has a and b switched, so we switch again to make it normal
+    api.Press(this.props.route.ipAddress, 'a'); //emulator has a and b switched, so we switch again to make it normal
   }
   _BPressOut() {
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'a'); //emulator has a and b switched, so we switch again to make it normal
+    api.Release(this.props.route.ipAddress, 'a'); //emulator has a and b switched, so we switch again to make it normal
   }
 
   _XPressIn() {
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'x');
+    api.Press(this.props.route.ipAddress, 'y'); //emulator has x and y switched, so we switch again to make it normal
   }
   _XPressOut() {
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'x');
+    api.Release(this.props.route.ipAddress, 'y'); //emulator has x and y switched, so we switch again to make it normal
   }
 
   _YPressIn() {
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'y');
+    api.Press(this.props.route.ipAddress, 'x'); //emulator has x and y switched, so we switch again to make it normal
   }
   _YPressOut() {
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'y');
+    api.Release(this.props.route.ipAddress, 'x'); //emulator has x and y switched, so we switch again to make it normal
   }
 
   /////////////////////////////////////////////////////////////////////
@@ -232,11 +232,11 @@ class ControllerView extends React.Component {
       }
     }
     this.setState({dPadButton: "up"});
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'up');
+    api.Press(this.props.route.ipAddress, 'up');
   }
   _upArrowPressOut() {
     this.setState({dPadButton: undefined});
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'up');
+    api.Release(this.props.route.ipAddress, 'up');
   }
 
   _downArrowPressIn() {
@@ -250,11 +250,11 @@ class ControllerView extends React.Component {
       }
     }
     this.setState({dPadButton: "down"});
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'down');
+    api.Press(this.props.route.ipAddress, 'down');
   }
   _downArrowPressOut() {
     this.setState({dPadButton: undefined});
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'down');
+    api.Release(this.props.route.ipAddress, 'down');
   }
 
   _rightArrowPressIn() {
@@ -268,11 +268,11 @@ class ControllerView extends React.Component {
       }
     }
     this.setState({dPadButton: "right"});
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'right');
+    api.Press(this.props.route.ipAddress, 'right');
   }
   _rightArrowPressOut() {
     this.setState({dPadButton: undefined});
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'right');
+    api.Release(this.props.route.ipAddress, 'right');
   }
 
   _leftArrowPressIn() {
@@ -286,11 +286,11 @@ class ControllerView extends React.Component {
       }
     }
     this.setState({dPadButton: "left"});
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'left');
+    api.Press(this.props.route.ipAddress, 'left');
   }
   _leftArrowPressOut() {
     this.setState({dPadButton: undefined});
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'left');
+    api.Release(this.props.route.ipAddress, 'left');
   }
 
   /////////////////////////////////////////////////////////////////////
@@ -298,34 +298,34 @@ class ControllerView extends React.Component {
   //TODO: implement shoulder buttons on screen, or ideally with volume rocker
   /////////////////////////////////////////////////////////////////////
   _rightShoulderPressIn() {
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'r-shoulder');
+    api.Press(this.props.route.ipAddress, 'r-shoulder');
   }
   _rightShoulderPressOut() {
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'r-shoulder');
+    api.Release(this.props.route.ipAddress, 'r-shoulder');
   }
 
   _leftShoulderPressIn() {
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'l-shoulder');
+    api.Press(this.props.route.ipAddress, 'l-shoulder');
   }
   _leftShoulderPressOut() {
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'l-shoulder');
+    api.Release(this.props.route.ipAddress, 'l-shoulder');
   }
 
   /////////////////////////////////////////////////////////////////////
   //Start and Select buttons
   /////////////////////////////////////////////////////////////////////
   _startPressIn() {
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'start');
+    api.Press(this.props.route.ipAddress, 'start');
   }
   _startPressOut() {
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'start'); 
+    api.Release(this.props.route.ipAddress, 'start'); 
   }
 
   _selectPressIn() {
-    api.Press(this.props.route.ipAddress, this.props.route.playerID, 'select');
+    api.Press(this.props.route.ipAddress, 'select');
   }
   _selectPressOut() {
-    api.Release(this.props.route.ipAddress, this.props.route.playerID, 'select');
+    api.Release(this.props.route.ipAddress, 'select');
   }
 
   render() {

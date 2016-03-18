@@ -11,7 +11,7 @@ html, body, canvas {
 }
 @font-face {
     font-family: dockerOne;
-    src: url(dockerOne.ttf);
+    src: url(DockerOne.ttf);
 }
 .button {
   height:100px;
@@ -28,8 +28,9 @@ html, body, canvas {
 }
 #qrcode {
   margin: 0 auto;
+  border: thick solid white;
   margin-top:10%;
-  width: 275px;
+  width: 255px;
 }
 #menu-screen {
   position: fixed;

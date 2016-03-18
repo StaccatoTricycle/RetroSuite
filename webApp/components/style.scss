@@ -1,0 +1,29 @@
+.chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+.chart.csstrans rect {
+  transition: width 1s ease-in;
+}
+
+.chart rect {
+  
+}
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+.chart .addBar-enter rect{
+  opacity: 0.5;
+  width: 0px;
+}
+.chart .addBar-enter.addBar-enter-active rect{
+  opacity: 1;
+  transition: width .1s ease-in;
+  transition: opacity .5s ease-in;
+}

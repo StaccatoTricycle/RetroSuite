@@ -14,16 +14,16 @@ var api = {
     });
   },
 
-  Press(ipAddress, playerID, button) {
-    var url = 'http://' + ipAddress + '/player/' + playerID + '/press/' + button;
+  Press(ipAddress, button) {
+    var url = 'http://' + ipAddress + '/player/press/' + button;
     return fetch(url, {
       method: 'POST',
       body: null
     });
   },
 
-  Release(ipAddress, playerID, button) {
-    var url = 'http://' + ipAddress + '/player/' + playerID + '/release/' + button;
+  Release(ipAddress, button) {
+    var url = 'http://' + ipAddress + '/player/release/' + button;
     return fetch(url, {
       method: 'POST',
       body: null

@@ -1,0 +1,92 @@
+@font-face {
+  font-family: dockerOne;
+  src: url(DockerOne.ttf);
+}
+
+div {
+  border: 1px solid red;
+}
+
+nav {
+  padding-left: 10px;
+  padding-right: 10px;
+  min-height: 60px;
+}
+
+.thin-white-border {
+  border: 1px solid white;
+}
+
+.height-100 {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.height-90 {
+  height: 90%;
+  box-sizing: border-box;
+}
+
+.height-70 {
+  height: 70%;
+  box-sizing: border-box;
+}
+
+.height-60 {
+  height: 60%;
+  box-sizing: border-box;
+}
+
+.height-30 {
+  height: 30%;
+  box-sizing: border-box;
+}
+
+.height-20 {
+  height: 20%;
+  box-sizing: border-box;
+}
+
+.height-10 {
+  height: 10%;
+  box-sizing: border-box;
+}
+
+.margin-4 {
+  margin-top: 4%;
+  margin-bottom: 4%;
+}
+
+.margin-2 {
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.no-bottom-margin {
+  margin-bottom: 0;
+}
+
+.signature-color {
+  background-color: #203346;
+}
+
+.brand-logo {
+  cursor: pointer;
+  font-family: dockerOne;
+}
+
+.button-collapse {
+  cursor: pointer;
+}
+
+.a-little-bigger {
+  font-size: 120%;
+}
+
+.dpad {
+  background-image: url('assets/images/dpad-playable.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 70px;
+  width: 70px;
+}

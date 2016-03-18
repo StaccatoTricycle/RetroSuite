@@ -46,7 +46,6 @@ class QRReader extends React.Component {
       this.props.navigator.push({
         component: ControllerView,
         ipAddress: ipAddress, // pass the ipAddress to ControllerView
-        playerID: playerID, // pass the playerID (p1 or p2) to ControllerView
         sceneConfig: {
           ...Navigator.SceneConfigs.FloatFromBottom,
           gestures: {} //disable ability to swipe to pop back from ControllerView to QRReader once past the ip address page

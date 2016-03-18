@@ -18,44 +18,32 @@ function router(req, res) {
     res.writeHead(200, {
       'Content-Type': 'application/json'
     });
-    var sendData = {ipAddress: ip4, port: port};
     if (numberOfPlayersJoined === 0) {
-      console.log('player 1 just joined');
+      console.log('player has joined');
       numberOfPlayersJoined++;
-      sendData.player = 1;
-      res.end(JSON.stringify(sendData));
-    } else if (numberOfPlayersJoined === 1) {
-      console.log('player 2 just joined');
-      numberOfPlayersJoined++;
-      sendData.player = 2;
-      res.end(JSON.stringify(sendData));
+      res.end(JSON.stringify({ipAddress: ip4, port: port}));
     } else {
       console.log('no more players allowed');
-      res.end(JSON.stringify({player: 'no more players allowed'}));
+      res.end(JSON.stringify({message: 'no more players allowed'}));
     }
-  } else if ( // app.get('/player/:player-num/:action/:button', cb)   like: /player/1/press/a
+  } else if ( // app.post('/player/:action/:button', cb)   like: /player/press/a
     httpVerb === 'POST' && //Post requests are possible and don't fire three times
-    pathArr.length === 5 &&
+    pathArr.length === 4 &&
     pathArr[1] === 'player'
   ) {
-    console.log('httpPath');
-    console.log(httpPath);
-    var playerNum = parseInt(pathArr[2]);
     var action;
-    if (pathArr[3] === 'press') {
+    if (pathArr[2] === 'press') {
       action = 'keydown';
-    } else if (pathArr[3] === 'release') {
+    } else if (pathArr[2] === 'release') {
       action = 'keyup';
     }
-    var button = pathArr[4];
+    var button = pathArr[3];
     var asciiNum = getAsciiKey(button);
     var keyBoardEvent = makeEvent(action, asciiNum);
-    console.log('in router, keyBoardEvent:');
-    console.log(keyBoardEvent);
     document.querySelector('body').dispatchEvent(keyBoardEvent);
-    console.log('player ' + playerNum + ' just ' + pathArr[3] + 'd "' + button + '"');
+    console.log('player just ' + action + 'd "' + button + '"');
     res.writeHead(200, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify({message: 'player ' + playerNum + ' just ' + pathArr[3] + 'd ' + button}));
+    res.end(JSON.stringify({message: 'player just ' + action + 'ed ' + button}));
   } else {
     res.writeHead(404, {'Content-Type': 'application/json'});
     res.end();
@@ -99,8 +87,6 @@ try {
 
 // Helper function to create keyboard events:
 function makeEvent(type, asciiNum) {
-
-  console.log('triggered');
 
   var evt = new KeyboardEvent(type, {
     'bubbles': true,

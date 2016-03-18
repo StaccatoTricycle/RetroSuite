@@ -5098,7 +5098,7 @@ function ondrain() {
 
 
 function httpSocketSetup(socket) {
-  console.log('httpSocketSetup');
+  // console.log('httpSocketSetup');
   socket.removeListener('drain', ondrain);
   socket.on('drain', ondrain);
 }
@@ -5153,7 +5153,7 @@ function connectionListener(socket) {
     abortIncoming();
   }
 
-  console.log('SERVER new http connection');
+  // console.log('SERVER new http connection');
 
   httpSocketSetup(socket);
 
@@ -5181,7 +5181,7 @@ function connectionListener(socket) {
   });
 
   socket.ondata = function(d, start, end) {
-    console.log('ondata');
+    // console.log('ondata');
     var ret = parser.execute(d, start, end - start);
     if (ret instanceof Error) {
       debug('parse error');
@@ -5237,7 +5237,7 @@ function connectionListener(socket) {
   // new message. In this callback we setup the response object and pass it
   // to the user.
   parser.onIncoming = function(req, shouldKeepAlive) {
-    console.log('onincoming');
+    // console.log('onincoming');
     incoming.push(req);
 
     var res = new ServerResponse(req);
