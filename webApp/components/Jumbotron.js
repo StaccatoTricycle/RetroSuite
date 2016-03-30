@@ -31,11 +31,15 @@ class Jumbotron extends Component {
       else {
         // otherwise if camera is allowed toggle jumboShown status
         this.state.jumboShown = !this.state.jumboShown;
-        if (this.state.jumboShown) this.props.socket.emit('is-a-streamer')
+        if (this.state.jumboShown) {
+          this.props.socket.emit('is-a-streamer')
+          document.getElementById('chat-box').style.height = "30%"
+        }
         if (!this.state.jumboShown) {
           this.props.socket.emit('opt-out-of-jumbo') // if you toggle off the video, let the server know.
           console.log('opt-out-of-jumbo', this.state.outsideStream)
           this.state.outsideStream.getVideoTracks()[0].stop();
+          document.getElementById('chat-box').style.height = "90%"
         }
       }
       // trigger a render

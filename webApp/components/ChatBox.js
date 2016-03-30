@@ -87,14 +87,14 @@ class ChatBox extends Component {
 
     // Only keep most recent 200 messages (chats and moves)
     messages = messages.slice(-200);
-    this.setState({ 
+    this.setState({
       messages: messages
     });
   }
 
 
   handleChatInput(e) {
-    // If someone presses 'enter' on input box, check the content type (img,vid or plain text) 
+    // If someone presses 'enter' on input box, check the content type (img,vid or plain text)
     // and then run the submit handler
     if (e.charCode === 13 || e.keyCode === 13) {
       var input = this.state.chatInput
@@ -115,7 +115,7 @@ class ChatBox extends Component {
         // Then check if url refers to an image (jpg, jpeg, gif, png, svg, bmp)
         var isImageURL = /(?:jpe?g|gif[^v]|png|svg|bmp)/i;
         if (isImageURL.test(input)) {
-          
+
           // convert to image markdown syntax and then submit
           var image = '![image](' + input + ')'
           return  this.handleSumbit(image, this.state.nickname);
@@ -143,7 +143,7 @@ class ChatBox extends Component {
 
     // If message is empty, don't emit
     if (msg === '' ) return;
-    
+
 
     // If joined already, render and emit message
     if (this.state.joined) {
@@ -171,14 +171,14 @@ class ChatBox extends Component {
 
   render() {
     return (
-      <div className="height-60 grey lighten-4">
+      <div id="chat-box" className="height-90 grey lighten-4">
         <div className="messages">
           {this.state.messages.map ((message, index) =>
           <ChatMessage message={message} key={index} displayMoves={this.state.displayMoves} />
           )}
         </div>
         <div className="input-field grey lighten-4 row no-bottom-margin">
-          <input className="col s8 m9 l10 black-text .rounded-10 valign-wrapper" type="text" placeholder={this.state.placeholder} 
+          <input className="col s8 m9 l10 black-text .rounded-10 valign-wrapper" type="text" placeholder={this.state.placeholder}
             value={this.state.chatInput} onChange={this.handleChatInput} onKeyPress={this.handleChatInput} />
           <div className="right tooltipped" data-position="top" data-delay="800" data-tooltip="Show/hide moves">
             <Toggle className="col s5 m4 l3 valign-wrapper" defaultChecked={this.state.displayMoves} onChange={this.handleToggle}/>

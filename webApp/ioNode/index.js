@@ -37,7 +37,9 @@ debug('server uid %s', uid);
 // initialize array of user-selected moves and vote count object:
 var moves = [];
 var voteCount = {};
+// clients who are ready to be in the jumbo
 var streamerCLIENTS = {};
+var CLIENTS = [];
 // helper function to find the winning vote:
 var mode = function (arr) {
   var counts = {};
@@ -58,6 +60,7 @@ var mode = function (arr) {
 io.total = 0;
 var currentStreamerSocket;
 io.on('connection', function(socket){
+  CLIENTS.push(socket)
   // send them the most recent frame of the emulator
   redis.get('crowdmu:frame', function(err, image) {
     if (err) console.log(err)
@@ -121,6 +124,8 @@ io.on('connection', function(socket){
 
   // populate the moves array when users cast their move vote:
   socket.on('submitMove', function (key, timestamp) {
+    console.log('MOVE submitted:', key)
+    console.log('HAS voted?:', socket.hasVoted)
     if (socket.hasVoted) {
       return;
     }
@@ -159,9 +164,9 @@ setInterval(function () {
       redis.publish('crowdmu:move', keys[winningMove]);
       // socket.emit('move', winningMove, socket.nick); // do we need these?
       // broadcast(socket, 'move', winningMove, socket.nick); // do we need these?
-      for (id in streamerCLIENTS) {
-        streamerCLIENTS[id].hasVoted = false
-      }
+      CLIENTS.forEach((socket) => {
+        socket.hasVoted = false;
+      })
       io.sockets.emit('sendVoteCount', {});
       moves = [];
       voteCount = {};
